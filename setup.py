@@ -32,7 +32,5 @@ setup(
     author="sbmshukla",
     author_email="sbmshukla17@gmail.com",
     packages=find_packages(),  # Auto-discovers all Python packages/modules
-    install_requires=get_requirements(
-        "requirements.txt"
-    ),  # Loads external dependencies securely
+    install_requires=get_requirements("requirements.txt"),
 )

@@ -115,7 +115,7 @@ class DataTransformation:
                 obj=preprocessor_obj,
             )
 
-            save_object("final_model/preprocessor.pkl", preprocessor_obj)
+            save_object("final_model/pre.pkl", preprocessor_obj)
             ## preparing artifacts
 
             dataclass_transform_artifacts = DataTransformationArtifacts(

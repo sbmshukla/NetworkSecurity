@@ -1,6 +1,7 @@
 import sys
 import os
 import certifi
+from networksecurity.pipeline.training_pipeline import TrainingPipeline
 import pymongo
 import pandas as pd
 from dotenv import load_dotenv
@@ -58,6 +59,12 @@ async def index():
 @app.get("/train")
 async def train_route():
     try:
-        pass
+        train_pipeline = TrainingPipeline()
+        train_pipeline.run_pipeline()
+        return Response("Training has been successfully completed")
     except Exception as e:
         raise NetworkSecurityException(e, sys)
+
+
+if __name__ == "__main__":
+    app_run(app, host="localhost", port=8000)

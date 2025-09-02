@@ -62,7 +62,7 @@ class TrainingPipeline:
             logging.info(
                 f"Data Validation Completed. Artifact: {data_validation_artifact}"
             )
-            return data_ingestion_artifact
+            return data_validation_artifact
         except Exception as e:
             raise NetworkSecurityException(e, sys)
 
@@ -112,6 +112,8 @@ class TrainingPipeline:
             data_transformation_artifact = self.start_data_transformation(
                 data_validation_artifact
             )
-            self.start_model_training(data_transformation_artifact)
+            model_trainer_artifact = self.start_model_training(
+                data_transformation_artifact
+            )
         except Exception as e:
             raise NetworkSecurityException(e, sys)

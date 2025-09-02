@@ -1,5 +1,3 @@
-from email.mime import base
-import stat
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
 

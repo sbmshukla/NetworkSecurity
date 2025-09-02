@@ -12,3 +12,4 @@ test_mongo_db.py
 # Ignore root-level folders
 logs/
 Artifacts/
+mlruns/

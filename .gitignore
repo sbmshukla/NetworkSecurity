@@ -1,4 +1,14 @@
-venv
+# Ignore virtual environment and environment variables
+venv/
 .env
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+
+# Ignore test script
 test_mongo_db.py
-/logs
+
+# Ignore root-level folders
+logs/
+Artifacts/

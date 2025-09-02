@@ -46,9 +46,6 @@ class DataIngestion:
             )
             self.mongo_client = MongoClient(MONGO_DB_URL)
 
-            # database_name = "SBMSHUKLA"
-            # collection_name = "NetworkDATA"
-
             collection = self.mongo_client[database_name][collection_name]
             collection_count = collection.count_documents({})
 

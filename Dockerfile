@@ -4,12 +4,10 @@ WORKDIR /app
 COPY . /app
 
 # Install system dependencies and clean up APT cache
-RUN apt-get update && apt-get install -y awscli \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update -y && apt install awscli -y
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && pip install -r requirements.txt
 
 # Run the application
 CMD ["python", "app.py"]
-

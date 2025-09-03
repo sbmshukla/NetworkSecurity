@@ -1,48 +1,66 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline # Name of the workflow shown in GitHub Actions UI
 
 on:
   push:
     branches:
-      - main
+      - main # Trigger workflow only on pushes to the main branch
     paths-ignore:
-      - "README.md"
+      - "README.md" # Skip workflow if only README.md is changed
 
 jobs:
   integration:
-    name: Continuous Integration
-    runs-on: ubuntu-latest
+    name: Continuous Integration # First job: basic CI checks
+    runs-on: ubuntu-latest # Use latest Ubuntu runner
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # Pulls your repo code into the runner
 
       - name: Lint Code
-        run: echo "Linting Repository"
+        run: echo "Linting Repository" # Placeholder for linting (e.g., flake8)
 
       - name: Run Unit Tests
-        run: echo "Running Unit Tests"
+        run: echo "Running Unit Tests" # Placeholder for tests (e.g., pytest)
 
   build-and-push-ecr-image:
-    name: Continuous Delivery
+    name: Continuous Delivery # Second job: builds and pushes Docker image
     runs-on: ubuntu-latest
-    needs: integration # Waits for integration job to finish
+    needs: integration # Waits for CI job to complete before running
+
+    env:
+      IMAGE_TAG: latest # Tag for the Docker image
+      AWS_REGION: ${{ secrets.AWS_REGION }} # AWS region from GitHub secrets
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }} # ECR repo name from secrets
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # Pulls your repo code again for this job
 
-      - name: Install Utilites
+      - name: Install Utilities
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq unzip
+          sudo apt-get install -y jq unzip  # Installs CLI tools (optional)
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v2 # Authenticates with AWS
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # From GitHub secrets
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v1 # Logs in to ECR and sets registry output
+
+      - name: Build, Tag, and Push Docker Image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} # Registry URL from login step
+        run: |
+          # Build Docker image with tag
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+          # Tag image explicitly (optional but safe)
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+          # Push image to ECR
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

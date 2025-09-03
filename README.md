@@ -172,9 +172,11 @@ Expert in ML pipelines, DevOps, and network security tooling
 Pull requests are welcome!  
 For major changes, please open an issue first to discuss what you'd like to change.  
 
-
+---
 ## Run Using Docker
+```
 git clone https://github.com/sbmshukla/NetworkSecurity.git
 cd NetworkSecurity
 docker build -t networksecurity .
 docker run -d -p 8080:8080 networksecurity
+```

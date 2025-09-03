@@ -64,3 +64,37 @@ jobs:
 
           # Push image to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy-to-ec2:
+    name: Continuous Deployment
+    runs-on: self-hosted
+    needs: build-and-push-ecr-image  # Waits for Docker image to be pushed
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}} 
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Login To Amazone ECR
+        id: login-user
+        uses: aws-actions/amazon-ecr-login@v1
+
+
+      - name: Pull Latest Image
+        run: |
+          docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{secrets.ECR_REPOSITORY_NAME}}:latest
+
+      - name: Run Docker Container
+        run: |
+          docker stop app || true && docker rm app || true
+          docker run -d -p 8080:8080 --ipc="host" --name=app -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+      - name: Clean Previous Images and Containers
+        run: |
+          docker system prune -f
+

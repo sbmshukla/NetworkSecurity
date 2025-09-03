@@ -70,10 +70,10 @@ class ModelTrainer:
     def train_model(self, X_train, y_train, X_test, y_test):
         models = {
             "Logistic Regression": LogisticRegression(verbose=1),
-            "K-Nearest Neighbors": KNeighborsClassifier(),  # No verbose param
-            "Decision Tree": DecisionTreeClassifier(),  # No verbose param
-            "Random Forest": RandomForestClassifier(verbose=1),
-            "AdaBoost": AdaBoostClassifier(),  # No verbose param
+            # "K-Nearest Neighbors": KNeighborsClassifier(),  # No verbose param
+            # "Decision Tree": DecisionTreeClassifier(),  # No verbose param
+            # "Random Forest": RandomForestClassifier(verbose=1),
+            # "AdaBoost": AdaBoostClassifier(),  # No verbose param
             "Gradient Boosting": GradientBoostingClassifier(verbose=1),
         }
 
@@ -159,7 +159,7 @@ class ModelTrainer:
         )
         os.makedirs(model_dir_path, exist_ok=True)
 
-        Network_Model = NetworkModel(prepressor=preprocessor, model=best_model)
+        Network_Model = NetworkModel(preprocessor=preprocessor, model=best_model)
         save_object(
             self.model_trainer_config.trained_model_file_path, obj=Network_Model
         )

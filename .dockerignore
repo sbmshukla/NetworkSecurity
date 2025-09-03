@@ -31,3 +31,14 @@ mlruns/
 prediction_output/
 final_model/
 valid_data/
+
+
+
+__pycache__/
+*.pyc
+venv/
+final_model/
+*.pkl
+*.csv
+.git/
+README.md

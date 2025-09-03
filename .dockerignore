@@ -1,0 +1,33 @@
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Model artifacts and outputs
+final_model/
+prediction_output/
+*.pkl
+*.csv
+
+# Git and editor configs
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+
+# Ignore test script
+test_mongo_db.py
+
+# Ignore root-level folders
+logs/
+Artifacts/
+mlruns/
+prediction_output/
+final_model/
+valid_data/

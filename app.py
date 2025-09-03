@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-
+from uvicorn import run as app_run
 from networksecurity.pipeline.training_pipeline import TrainingPipeline
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
 from networksecurity.constant.training_pipeline import (
@@ -100,6 +100,4 @@ async def predict_route(request: Request, file: UploadFile = File(...)):
 
 # Run the app
 if __name__ == "__main__":
-    from uvicorn import run as app_run
-
     app_run(app, host="localhost", port=8000)

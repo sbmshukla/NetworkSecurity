@@ -7,9 +7,10 @@ import sys
 
 
 class NetworkModel:
-    def __init__(self, prepressor, model):
+
+    def __init__(self, preprocessor, model):
         try:
-            self.preprocessor = prepressor
+            self.preprocessor = preprocessor
             self.model = model
         except Exception as e:
             raise NetworkSecurityException(e, sys)

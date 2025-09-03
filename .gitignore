@@ -13,3 +13,7 @@ test_mongo_db.py
 logs/
 Artifacts/
 mlruns/
+prediction_output/
+final_model/
+valid_data/
+

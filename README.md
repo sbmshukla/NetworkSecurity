@@ -26,7 +26,7 @@ A machine learning-powered API for detecting phishing URLs and classifying netwo
 
 ---
 
-```mermaid
+```
 graph TD
 A[Push to main branch] --> B[GitHub Actions CI]
 B --> C[Build & Push Docker Image to ECR]
@@ -38,6 +38,7 @@ Trigger: Push to main
 CI: Linting, testing, Docker build
 
 CD: Image pushed to ECR, EC2 pulls and runs container
+```
 
 ---
 
